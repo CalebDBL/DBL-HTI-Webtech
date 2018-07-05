@@ -1,0 +1,430 @@
+\documentclass[journal, 9pt]{vgtc}                % final (journal style)
+%\documentclass[review,journal]{vgtc}         % review (journal style)
+%\documentclass[widereview]{vgtc}             % wide-spaced review
+%\documentclass[preprint,journal]{vgtc}       % preprint (journal style)
+
+%% Uncomment one of the lines above depending on where your paper is
+%% in the conference process. ``review'' and ``widereview'' are for review
+%% submission, ``preprint'' is for pre-publication, and the final version
+%% doesn't use a specific qualifier.
+
+%% Please use one of the ``review'' options in combination with the
+%% assigned online id (see below) ONLY if your paper uses a double blind
+%% review process. Some conferences, like IEEE Vis and InfoVis, have NOT
+%% in the past.
+
+%% Please note that the use of figures other than the optional teaser is not permitted on the first page
+%% of the journal version.  Figures should begin on the second page and be
+%% in CMYK or Grey scale format, otherwise, colour shifting may occur
+%% during the printing process.  Papers submitted with figures other than the optional teaser on the
+%% first page will be refused. Also, the teaser figure should only have the
+%% width of the abstract as the template enforces it.
+
+%% These few lines make a distinction between latex and pdflatex calls and they
+%% bring in essential packages for graphics and font handling.
+%% Note that due to the \DeclareGraphicsExtensions{} call it is no longer necessary
+%% to provide the the path and extension of a graphics file:
+%% \includegraphics{diamondrule} is completely sufficient.
+%%
+\ifpdf%                                % if we use pdflatex
+  \pdfoutput=1\relax                   % create PDFs from pdfLaTeX
+  \pdfcompresslevel=8                 % PDF Compression
+  \pdfoptionpdfminorversion=7          % create PDF 1.7
+  \ExecuteOptions{pdftex}
+  \usepackage{graphicx}                % allow us to embed graphics files
+  \DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg} % for pdflatex we expect .pdf, .png, or .jpg files
+\else%                                 % else we use pure latex
+  \ExecuteOptions{dvips}
+  \usepackage{graphicx}                % allow us to embed graphics files
+  \DeclareGraphicsExtensions{.eps}     % for pure latex we expect eps files
+\fi%
+
+%% it is recomended to use ``\autoref{sec:bla}'' instead of ``Fig.~\ref{sec:bla}''
+\graphicspath{{figures/}{pictures/}{images/}{./}} % where to search for the images
+
+\usepackage{microtype}                 % use micro-typography (slightly more compact, better to read)
+\PassOptionsToPackage{warn}{textcomp}  % to address font issues with \textrightarrow
+\usepackage{textcomp}                  % use better special symbols
+\usepackage{mathptmx}                  % use matching math font
+\usepackage{times}                     % we use Times as the main font
+\renewcommand*\ttdefault{txtt}         % a nicer typewriter font
+\usepackage{cite}                      % needed to automatically sort the references
+\usepackage{tabu}                      % only used for the table example
+\usepackage{booktabs}                  % only used for the table example
+\usepackage{wrapfig}
+\usepackage{ragged2e}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage[noend]{algpseudocode}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+%% We encourage the use of mathptmx for consistent usage of times font
+%% throughout the proceedings. However, if you encounter conflicts
+%% with other math-related packages, you may want to disable it.
+
+%% In preprint mode you may define your own headline.
+%\preprinttext{To appear in IEEE Transactions on Visualization and Computer Graphics.}
+
+%% If you are submitting a paper to a conference for review with a double
+%% blind reviewing process, please replace the value ``0'' below with your
+%% OnlineID. Otherwise, you may safely leave it at ``0''.
+\onlineid{0}
+
+%% declare the category of your paper, only shown in review mode
+\vgtccategory{Research}
+%% please declare the paper type of your paper to help reviewers, only shown in review mode
+%% choices:
+%% * algorithm/technique
+%% * application/design study
+%% * evaluation
+%% * system
+%% * theory/model
+\vgtcpapertype{please specify}
+
+%% Paper title.
+\title{Sunburts and FoamTrees: A Multi-Visualization Tool}
+
+%% This is how authors are specified in the journal style
+
+%% indicate IEEE Member or Student Member in form indicated below
+\author{D. C. L. Emons, Y. Huang, R. C. Poritz, A. \v{S}ahman, R. J. R. Schutte, and R. T. L. Wosyka}
+\authorfooter{
+%% insert punctuation at end of each item
+\item
+  Dave Cornelius Leonardus Emons, E-mail: d.c.l.emons@student.tue.nl
+\item
+  Ying Huang, E-mail: y.huang.2@student.tue.nl
+\item
+  Raffaello Claudio Poritz, E-mail: r.c.poritz@student.tue.nl
+\item
+  Almir \v{S}ahman, E-mail: a.sahman@student.tue.nl
+\item
+  Richard Jacobus Rumoldus Schutte, E-mail: r.j.r.schutte@student.tue.nl
+\item
+  Rick Theodorus Leonardus Wosyka, E-mail: r.t.l.wosyka@student.tue.nl
+}
+
+%other entries to be set up for journal
+\shortauthortitle{Dave Emons \MakeLowercase{\textit{et al.}}: }	
+%\shortauthortitle{Firstauthor \MakeLowercase{\textit{et al.}}: Paper Title}
+
+%% Abstract section.
+\abstract{In this report we will discuss, describe, and explain our work in creating and applying various hierarchy visualizations, each showcasing
+  different aspects of a given data set. We implemented Sunbursts and FoamTrees to incorporate different views.
+  In order to give data analysts from around the globe access to our tool providing multiple visualizations, we have used Python as our programming
+  language, along with the Bokeh library, to make it web-based, allowing access to anybody anywhere. Furthermore, we provide an example of our visualization
+  applied to our own custom data set.
+} % end of abstract
+
+%% Keywords that describe your work. Will show as 'Index Terms' in journal
+%% please capitalize first letter and insert punctuation after last keyword
+\keywords{Hierarchy visualization, Interaction techniques, Multiple coordinated views, Web-based visualization, Sunburst, FoamTree}
+
+%% ACM Computing Classification System (CCS). 
+%% See <http://www.acm.org/class/1998/> for details.
+%% The ``\CCScat'' command takes four arguments.
+
+%\CCScatlist{ % not used in journal version
+% \CCScat{K.6.1}{Management of Computing and Information Systems}%
+%{Project and People Management}{Life Cycle};
+% \CCScat{K.7.m}{The Computing Profession}{Miscellaneous}{Ethics}
+%}
+
+%% Placeholder for title image
+\teaser{
+  \centering
+  \includegraphics[width=\linewidth]{vis1.png}
+  \caption{Sunburst and FoamTree on custom data set}
+	\label{Teaser:Fig}
+}
+
+%% Uncomment below to disable the manuscript note
+%\renewcommand{\manuscriptnotetxt}{}
+
+%% Copyright space is enabled by default as required by guidelines.
+%% It is disabled by the 'review' option or via the following command:
+%\nocopyrightspace
+
+\vgtcinsertpkg
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% START OF THE PAPER %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%% The ``\maketitle'' command must be the first command after the
+%% ``\begin{document}'' command. It prepares and prints the title block.
+
+%% the only exception to this rule is the \firstsection command
+\firstsection{Introduction}
+
+\maketitle
+
+In this report, we will describe the two visualization techniques we have chosen, as well as explain what went into making our visualization tool. In order to help give perspective on hierarchical data
+to whomever may need it, be it data analysts or data enthusiasts, we have created a tool that creates two different visualizations of any hierarchical data set as they, individually, do not provide
+a full image of the data, but together, each makes up for many of the discrepancies of the other. Out of the many different visualizations (over 300 just on \url{www.treevis.net} alone), we decided
+to use Sunburts and FoamTrees, as not only to they compliment each other nicely, but they also provide with aesthetically pleasing images.\\
+One of the requirements for out tool was that it be accessible to anybody around the world, for them to simply upload a data set, in the Newick format, which is then parsed, and then have both visualizations created and shown.
+And so our tool is readily available on the internet, and makes use of the Bokeh library for Python, which facilitates the creation and integration of graphical visualizations
+on the web. We also used NumPy for the visualization, and the Biopython library for our parsing tool.\\
+We give an example of our tool, used on our own custom data set.
+\section{Related Work}
+
+Visualization of hierarchical data has been a central problem of information visualization for more than half a century. The first research paper on the matter in the Association for Computing Machinery's
+(the premier US scholarly society for computer scientists) Digital Archive dates back to the 1950's ~\cite{ACM}, but visualizations have been around for far longer, such as Johann Christian Lange's "Formal
+Logic Representation" which dates back to 1714 ~\cite{Baron1969}.\\
+Despite there being over 300 different visualizations on \url{www.treevis.net} alone ~\cite{treevis}, no single visualization gives a perfect representation of any and all hierarchical data set. For example,
+the Walker Layout ~\cite{Walker1990} suffers from the same problem as other node-link diagrams: due having the root alone at the top, with the leaves flooding
+the bottom, leaving them cramped together, not making use of the free space at the top of the visualization, near the root and the first few levels of the tree. To solve the problem of unused space, one
+could use a Nested Pie Chart ~\cite{Sukla2005}, but then another problem arrises: comparing the sizes of various shapes is inherently difficult, so estimating whether a certain subtree is larger or smaller
+than another is not something that can be done quickly and without extra information.\\
+Three-dimensional visualizations have also been created, some as early as the 1960, such as Jacques Bertin's Stereogram ~\cite{Bertin1967}. More recently, Mulitvariate Hierarchic Plots, which
+which closely resembles a three-dimensional version of our chosen Sunburst visualization, was created to help "analysts wish to interpret the structure of the data not only at a single point in
+time, but examine the changes in the data categories through time" ~\cite{Tekusova2008}. To that end, another, third dimension was added, to represent the changes of the data through
+time. Unfortunately, while this visualization technique still provides a lot of information to the data analyst, it suffers from the same problem of comparing region sizes as all other radial
+representations.\\
+Voronoi diagrams ~\cite{Balzer2005} offer aesthetically beautiful visualizations, and with the correct colouring scheme can offer input on the data that would 
+otherwise go unnoticed.  But as with every visualization, it is not perfect, as it comes at the cost of the high processing time needed to create the rendition,
+and does not support the displaying of negative values ~\cite{qlik}.\\	
+\\
+%\begin{figure}
+%make as wide as page and at the top of the page
+%\includegraphics[width=\textwidth]{vis2.png}
+%\caption{Homepage of our website, before anything is uploaded}
+%\end{figure}
+
+\section{Data Model}
+
+In general terms, data hierarchy gives relations between groups, subgroups, and individual elements of a data set. The data has a tree-like form to it, with every element other than the root (in tree terms)
+having exactly one parent element, not more and not less, but every element can have any number of children elements, be it zero, one, or twelve.\\
+The Newick format (also known as the Newick Standard, or New Hampshire Tree Format) is a way of representing trees in a computer-friendly fashion with parentheses and commas. It uses relation parentheses and
+trees described by Arthur Cayley in 1857 ~\cite{newick}. Nodes that are children of the same parent node appear within the same set of parentheses,
+and nodes that have the same depth are incased in the same number of parentheses, although they are not necessarily the same parentheses. In other words, nodes that result from the
+same split of a branch appear in the same pair of closed parentheses, separated by commas.\\
+There are two main limitations of the New Hampshire Standard. The first is the uniqueness, or lack thereof, of trees. In some fields, the order of descendants does not matter, while the format does
+take into account the order of inputed nodes. So for example, the tree $(A_1,(B_1,B_2),A_2);$ and $(A_2,(B_2,B_1),A_1);$ represent different trees, but to analysts in fields that do not care about left or right
+children of nodes, the two trees are the same.\\
+The second limitation is that the format represents rooted trees. If the root of a tree is irrelevant, or simply not inferable, the Newick Standard does will simply arbitrarily root the tree.
+For example, an example given by Joe Felsenstein ~\cite{newick}, one of the creators of the format, is the trees $(B,(A,D),C);$, $(A,(B,C),D)$, and $((A,D),(B,C))$ represent the same unrooted trees.\\
+
+\section{The Visualization Tool}
+
+\subsection{Graphical User Interface}
+
+%\includegraphics[width=\linewidth]{vis3.jpg}
+%\includegraphics[width=\linewidth]{vis4.jpg}
+
+Our website is very straightforward and user-friendly. As you can see in the above screeshots, the upload tool works like most uploads tool around the web, by simply having the
+user choose a file on their computer and clicking the upload button. Our tool then creates both visualizations, and as you can see in the provided images, hovering any region in the
+visualizations gives the user information on the data under the mouse cursor. We also have implemented the more basic functions of zooming in and out, moving the visualization,
+and focusing on certain areas of the image.
+
+\subsection{Visualization Techniques}
+
+First of all, before going into the visualizations itself, the visualizations rely in the data given by the parser. This data is given in the form of 'Node' objects with particular attributes used to visualize
+the data correctly. These attributes consist of the nodes' level (or depth), its direct children, and the amount of leaves in its sub-tree. These attributes are used to calculate how to visualize each individual node. Other attributes are defined in the visualization code itself, determined by calculations using the input attributes, or standard values.
+
+\vspace{5mm}
+
+For our first visualization, we decided upon a sunburst. It works by getting plotting a circle in the center, which represents the root node.
+Next, it plots an annular wedge* from the Bokeh library. The properties of this annular wedge allow us to create a section of a ring with our desired width and range.
+The range of each piece is given as the circumference of the ring piece, and as such an entire ring has range $2 \cdot \pi$. Each node gets assigned a right bound and left bound value corresponding to its given range in the ring.
+With this you get a circle in the middle as the root, and its direct children create a full ring around it, with the correct sizes for the importance corresponding to the importance of each node.
+
+\begin{algorithm}
+\caption{Sunburst}
+\begin{algorithmic}[1]
+\Require{Node objects with level, children, and leaves subtree}
+\Ensure{A sunburst visualization according to the data}
+\If{node.children}
+\State{count = 0}
+\For{n \textbf{in} node.children}
+\If{\textbf{not} n.seen}
+\If{count = 0}
+\State{Right bound of node is parents' right bound}
+\For{p \textbf{in} node.children}
+\State{Calculate p.range}
+\EndFor
+\Else{}
+\State{Right bound is last nodes' left bound}
+\EndIf
+\State{Calculate left bound}
+\State{Plot annular wedge}
+\State{count +=1}
+\State{Sunburst(n)}
+\EndIf
+\State{n.seen = True}
+\EndFor
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+Calculating the range is done using the leaves of the sub-tree of the current node, and of its parent. By dividing the number of leaves in the sub-tree of the node by the amount of leaves in the sub-tree of the parent , we get a percentage that gives us a sense of magnitude for this node.
+This percentage is then multiplied by the total range of the parent. The end result is the range of the node. By basing the range of the node of the range of its parent, we ensure the connection between the nodes is clear. The n.seen property is there to ensure no nodes get visualized multiple times.
+The final visualization will have all nodes visualized once, with the correct depths and connections between children and parents. 
+
+\vspace{10mm}
+
+Our second visualization is a slightly simplified version of a foam tree. The visualizing is done by the repeated plotting of quad* glyphs from the Bokeh Library The inner workings function similarly to the sunburst but with a couple of crucial differences. Firstly, instead of a range, an area is calculated for every node. However, this area is also calculated by using the number of leaves in the sub tree of the node and parent, multiplied by the area of the parent. To define the size of each node specifically, we use a left, right, top, and bottom value defined in the node object. While visualizing, the concept is that on the first layer, the root node is there, but not visible. The entire square is the root node. In it, you can see all of its direct children. Then, by clicking on one of the children,
+the glyph resizes to resemble the root node and then shows its own children in a similar manner. 
+
+\begin{algorithm}
+\caption{Foam tree}
+\begin{algorithmic}[1]
+\Require{Node objects with level, children, and leaves subtree}
+\Ensure{A foam tree visualization according to the data}
+\If{node.children}
+\For{n \textbf{in} node.children}
+\If{\textbf{not} n.seen}
+\If{Horizontal open space $>=$ Vertical open space}
+\State{Change right value, onwidth = True}
+\Else{}
+\State{Change bottom value, onwidth = False}
+\EndIf
+\State{Plot quad}
+\EndIf
+\If{onwidth = True}
+\State{Update horizontal open space}
+\Else{}
+\State{Update vertical open space}
+\EndIf
+\State{n.seen = True}
+\EndFor
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+The if-statement about the open space is there to determine how the next rectangles are placed. If there is more space horizontally than vertically, it will create a quad glyph with the length of the vertical space, and width horizontally such that the area is correct. The addiction of the open space object is there to keep track of how much of the area is still available, so it is important to 
+update this after every single node. 
+
+\subsection{Interaction Techniques}
+
+\subsection{Parser}
+
+		The parsing tool is the brains of the program. It reads the Newick-formatted input using the Biopython library, which creates a 'tree'-object from the data. This tree consists of Clade-objects, or Clades, that contain information about their name and direct children, among other things. The parser takes these attributes and attaches them to Node-objects, which will be used by the visualisation code to draw the hierarchical structure. The most important properties of the Nodes are the level (or depth) of the Node, the number of leaves in the subtree with that Node as its root, and a list of the Node's direct children.\\
+		
+		\begin{algorithm}
+		\caption{Parse($filename$)}
+		\begin{algorithmic}[1]
+			\Require file $filename$ in Newick format
+			\State tree $\leftarrow$ Biopython.parse($filename$)
+			\State levels $\leftarrow$ tree.depths
+			\State nodes $\leftarrow$ $empty\ list$
+			\State clades $\leftarrow$ tree.$find\_clades()$
+			\State rootnode $\leftarrow$ tree.$root$
+			\ForAll{clade $\textbf{in}$ clades}
+			\State node $\leftarrow Node(clade.name, clade.depth, clade.leaves)$
+			\State nodes.$append(node)$
+			\EndFor
+			\ForAll{vertex $\textbf{in}$ nodes}
+			\State vertex.children $\leftarrow$ $find\_children($vertex$)$
+			\EndFor
+		\end{algorithmic}
+	\end{algorithm}
+	
+	Overall, the Biopython library has turned out to be very useful for the heavy work in the parsing tool. The 'parse' and 'depths' functions were the most important time-savers. 'Parse' allowed us to immediately read the tree structure into an object with all necessary relations. 'Depths' is similar in that it provides an easy way to look up the depth of all Clades. Both of these functions could have been programmed manually, but that would have taken much more time and is likely more susceptible to errors.\\
+	There are, however, some problems with this library. Firstly, and also most importantly, Biopython is not the fastest library when it comes to reading Newick data. The actual parsing of large datasets and looping through all Clades in the resulting tree-object is relatively slow. Before applying optimisations, parsing a 324.000-element dataset took approximately fifteen minutes. After the optimisations this runtime was cut down to 44 seconds, which is still quite slow. Secondly, some functions, although useful, do not return data in a convenient manner. For example, the 'depths' function returns a dictionary with (Clade, depth) pairs. The problem is that the 'Clade' (which is the key in this dictionary) is actually a Clade-object. This was not clearly defined anywhere, so we were required to experiment with different datatypes to use as key in this dictionary. Eventually, we discovered what was going on, but it took quite a long time to figure that out.\\
+	
+\subsection{Implementation Details}
+	
+We chose to use Python as our programming language for ease of use. Given that we all took Data Analytics for Engineers last quartile, in which
+we learned and used Python, as well as the NumPy and Pandas library, we thought it would be best to work in a programming language we were
+all familiar with, and so we could all work in tandem on the project, without having any issues of swapping back and for between languages for 
+various parts of the tool and website. Coupled with the fact that Python was one of the recommended languages, with resources such as Bokeh 
+mentioned on the class site on Canvas, it was the natural choice.\\
+The data is uploaded to the website as a text file of any type, with the data in the Newick format. We then used the Biopython library to parse
+given dataset. The Bokeh  library was used in making both the visualization and the website, as "its goal is to provide elegant, concise construction of versatile graphics,
+and to extend this capability with high-performance interactivity over very large of streaming datasets" ~\cite{bokeh}. The visualization also made use 
+of the NumPy library for Python.\\
+
+
+\section{Application Example}
+
+%\includegraphics[width=\linewidth]{vis1.png}
+
+
+\section{Discussion and Limitations}
+
+In this section we will write about the development of our tool, what went according to plan, and what didn't.
+
+\subsection{Website}
+
+As of writing the report, we did not manage to get the tool up and running on a server to it accessible to anyone around the world. We ran into a series of 
+unexpected complications. The main issue, from which most of our other problems stemmed, was the fact that we only got access to the server provided by
+the University in week 7 of the project. By then, we had already had written all of the code for our visualizations, with only the interactions needing to be sorted
+out. We had also created a website, which we could run locally, using Flask. Unfortunately, we ran into a major problem when trying to migrate our website
+to the server: upon trying to run our code, we saw that the server did not have Flask.\\
+As we obviously did not have super-user privileges, we had to try to find a work around. One of our many attempts was to create a virtual environment on the 
+server, where we would have complete control over and could install whatever module we had used for our website. After spending the necessary time to learn
+how to create the environment, and how to use it, we ran into another problem: the environment was running Python 2.7, whilst we used 3.5 for our project. 
+This unfortunately made the visualization come out botched up. For example, instead of having out Sunburt be the beautiful radial visualization that it was, 
+all nodes, other than the root node, would appear as a line pointing out from the root, all overlapped on top of each other.\\
+We tried various other approaches to fix our problems, and with each attempt, we encountered new and unforseen problems arrise. In the end, we realized that
+we did not have the required background knowledge to fix the problem without a major overhaul of our already written code. And that is the reason why the main
+issue for our website was recieving access to the server so late in the process. Since we had already written most of the important code, our initial thought when
+trying to get our tool to run on the server was to simply migrate our code, which ran perfectly locally, to the webserver. Our various (ineffective) solutions took us
+about a week and a half, after which we came to the conclusion that the only way we could think of to get the website up and running was to scrap all our 
+non-visualization code, and rewrite all the website code in html, no longer using Flask, or Python, and call our Python code for the visualization from the html file.
+Sadly, as nobody in our group had any experience in html, we realized it would not be feasible in the short amount of time we had left, especially with exams 
+coming up.\\
+While it is sub-optimal, we only had one solution left, so we decided to submit our final prototype the same way we did for the interim prototype, which is
+submit all the code with a 'how-to' text file telling the user how to run the code locally to have access to the tool.
+
+\subsection{Visualizations}
+
+Our first visualization, the Sunburst, works as intended. On the other hand, our second visualization, the FoamTree, does not. Our final product ended up being
+closer to a simple Tree Map than we had initially anticipated. FoamTrees are supposed to be highly interactive visualizations, allowing the user to click on any
+node and zoom in on it and seeing it's children and descendants up to a certain predetermined depth. This allows the user to quickly follow a path down the tree, 
+or navigate in any way through the tree with ease.\\
+We encountered the problem of Bokeh not having an easy or efficient way or redrawing, retracing, or deleting lines. We didn't manage to get callbacks to work
+the way we wanted to, and as a result, our FoamTree did not turn out the way we intended. What we ended up with was a Tree Map with all nodes drawn, no matter the depth. This resulted in a somewhat cluttered visualization, that was not as easy to comprehend as we would have hoped.
+
+\section{Future Work}
+This section will give solutions to the previously talked about problems, which we could not implement due to time constraints or lack of prior experience.
+
+\subsection{Website}
+
+With the required background knowledge in web development, we would have had a fairly simple and straight-forward solution, which would have been to simply
+rewrite all the code for the website in html, and calling our Python code for the visualization from there, circumventing any problem from missing Python libraries.
+It is also possible that had we had more experience with servers and websites, we would have not only been better equipped to deal with any enventual problem 
+were they to arrise, we could also have prevented a fair amount of them from coming to be in the first place.
+
+\subsection{Visualizations}
+
+In order to make our second visualization the FoamTree we originally intended it to be, a few adjustments would be necessary. First of all, getting callbacks to work
+in the way we need them to, in order to allow us to redraw or delete lines. Secondly, every rendition of the visualization should only show the root node (or current
+root node), as the outermost rectangle, and only its children, and not all its descendants. This would greatly reduce the cluttering of the visualization, while also 
+improving runtime, as it reduces the number of nodes it needs to draw. It is possible to have more than just the children shown, and instead showing all of 
+the descendants up to a certain depth. The third and final requirement would be to get our clicking interaction to work. This would mean that when the user
+clicks on a certain node, the visualization is redrawn with that node as the root node, and its children (or descendants to a certain depth) be shown.
+
+\subsection{Parser}
+
+
+
+\section{Conclusion}
+
+This Design-Based Learning course and project taught us a lot. We were given what seemed to be at first a large and unsurmountable task, which then when divided
+into smaller individual pieces with the help of our tutor and scrum master, no longer seemed to be a daunting and impossible assignment. We learned how to divide
+large wishes for our project into smaller, indepdenant tasks, so that any one member of our group could work on something at any time, whilst not having to rely on
+the work of others to complete their own. Through division of labour, the small subtasks came together like the different pieces of a puzzle, working in unison to work
+toward the final goal.\\
+
+%% if specified like this the section will be committed in review mode
+\acknowledgments{
+We would like to thank our group members for their support in this DBL project. Moreover, we are thankful to our tutor who gave us a lot of feedback to find the right decisions in this project.}
+\newpage
+
+%\bibliographystyle{abbrv}
+\bibliographystyle{abbrv-doi}
+%\bibliographystyle{abbrv-doi-narrow}
+%\bibliographystyle{abbrv-doi-hyperref}
+%\bibliographystyle{abbrv-doi-hyperref-narrow}
+
+\bibliography{biblio}
+\end{document}
+
