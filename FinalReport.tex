@@ -52,13 +52,11 @@
 \usepackage{tabu}                      % only used for the table example
 \usepackage{booktabs}                  % only used for the table example
 \usepackage{wrapfig}
-\usepackage[latin1]{inputenc}
 \usepackage{ragged2e}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{algorithm}
-\usepackage{algorithmic}
 \usepackage{tikz}
 \usepackage[noend]{algpseudocode}
 \usepackage[english]{babel}
@@ -303,32 +301,36 @@ the glyph resizes to resemble the root node and then shows its own children in a
 The if-statement about the open space is there to determine how the next rectangles are placed. If there is more space horizontally than vertically, it will create a quad glyph with the length of the vertical space, and width horizontally such that the area is correct. The addiction of the open space object is there to keep track of how much of the area is still available, so it is important to 
 update this after every single node. 
 
+\subsection{Interaction Techniques}
 
-\subsection{Implementation Details}
+\subsection{Parser}
 
-The parsing tool is the brains of the program. It reads the Newick-formatted input using the Biopython library, which creates a 'tree'-object from the data. This tree consists of Clade-objects, or Clades, that contain information about their name and direct children, among other things. The parser takes these attributes and attaches them to Node-objects, which will be used by the visualisation code to draw the hierarchical structure. The most important properties of the Nodes are the level (or depth) of the Node, the number of leaves in the subtree with that Node as its root, and a list of the Node's direct children.\\
-	\begin{algorithm}
+		The parsing tool is the brains of the program. It reads the Newick-formatted input using the Biopython library, which creates a 'tree'-object from the data. This tree consists of Clade-objects, or Clades, that contain information about their name and direct children, among other things. The parser takes these attributes and attaches them to Node-objects, which will be used by the visualisation code to draw the hierarchical structure. The most important properties of the Nodes are the level (or depth) of the Node, the number of leaves in the subtree with that Node as its root, and a list of the Node's direct children.\\
+		
+		\begin{algorithm}
 		\caption{Parse($filename$)}
-		\begin{algorithmic}
-			\REQUIRE file $filename$ in Newick format
-			\STATE tree $\leftarrow$ Biopython.parse($filename$)
-			\STATE levels $\leftarrow$ tree.depths
-			\STATE nodes $\leftarrow$ $empty\ list$
-			\STATE clades $\leftarrow$ tree.$find\_clades()$
-			\STATE rootnode $\leftarrow$ tree.$root$
-			\FORALL{clade $\textbf{in}$ clades}
-			\STATE node $\leftarrow Node(clade.name, clade.depth, clade.leaves)$
-			\STATE nodes.$append(node)$
-			\ENDFOR
-			\FORALL{vertex $\textbf{in}$ nodes}
-			\STATE vertex.children $\leftarrow$ $find\_children($vertex$)$
-			\ENDFOR
+		\begin{algorithmic}[1]
+			\Require file $filename$ in Newick format
+			\State tree $\leftarrow$ Biopython.parse($filename$)
+			\State levels $\leftarrow$ tree.depths
+			\State nodes $\leftarrow$ $empty\ list$
+			\State clades $\leftarrow$ tree.$find\_clades()$
+			\State rootnode $\leftarrow$ tree.$root$
+			\ForAll{clade $\textbf{in}$ clades}
+			\State node $\leftarrow Node(clade.name, clade.depth, clade.leaves)$
+			\State nodes.$append(node)$
+			\EndFor
+			\ForAll{vertex $\textbf{in}$ nodes}
+			\State vertex.children $\leftarrow$ $find\_children($vertex$)$
+			\EndFor
 		\end{algorithmic}
 	\end{algorithm}
 	
-	
 	Overall, the Biopython library has turned out to be very useful for the heavy work in the parsing tool. The 'parse' and 'depths' functions were the most important time-savers. 'Parse' allowed us to immediately read the tree structure into an object with all necessary relations. 'Depths' is similar in that it provides an easy way to look up the depth of all Clades. Both of these functions could have been programmed manually, but that would have taken much more time and is likely more susceptible to errors.\\
-	There are, however, some problems with this library. Firstly, and also most importantly, Biopython is not the fastest library when it comes to reading Newick data. The actual parsing of large datasets and looping through all Clades in the resulting tree-object is relatively slow. Before applying optimisations, parsing a 324.000-element dataset took approximately fifteen minutes. After the optimisations this runtime was cut down to 44 seconds, which is still quite slow. Secondly, some functions, although useful, do not return data in a convenient manner. For example, the 'depths' function returns a dictionary with (Clade, depth) pairs. The problem is that the 'Clade' (which is the key in this dictionary) is actually a Clade-object. This was not clearly defined anywhere, so we were required to experiment with different datatypes to use as key in this dictionary. Eventually, we discovered what was going on, but it took quite a long time to figure that out.
+	There are, however, some problems with this library. Firstly, and also most importantly, Biopython is not the fastest library when it comes to reading Newick data. The actual parsing of large datasets and looping through all Clades in the resulting tree-object is relatively slow. Before applying optimisations, parsing a 324.000-element dataset took approximately fifteen minutes. After the optimisations this runtime was cut down to 44 seconds, which is still quite slow. Secondly, some functions, although useful, do not return data in a convenient manner. For example, the 'depths' function returns a dictionary with (Clade, depth) pairs. The problem is that the 'Clade' (which is the key in this dictionary) is actually a Clade-object. This was not clearly defined anywhere, so we were required to experiment with different datatypes to use as key in this dictionary. Eventually, we discovered what was going on, but it took quite a long time to figure that out.\\
+	
+\subsection{Implementation Details}
+	
 We chose to use Python as our programming language for ease of use. Given that we all took Data Analytics for Engineers last quartile, in which
 we learned and used Python, as well as the NumPy and Pandas library, we thought it would be best to work in a programming language we were
 all familiar with, and so we could all work in tandem on the project, without having any issues of swapping back and for between languages for 
@@ -344,29 +346,73 @@ of the NumPy library for Python.\\
 
 %\includegraphics[width=\linewidth]{vis1.png}
 
-For the purpose of this interim report, we applied our multi-visualization tool to our own custom data set. While this does not yield anomalies or unexpected results,
-it illustrates the goal and spirit of our visualizations. 
-The result are aesthetically pleasing and colourful images.
-
 
 \section{Discussion and Limitations}
 
-We ran into some unexpected setbacks in getting every part of the code to come together and work in unison. As a result, we have been forced settle on some fronts,
-as we knew they would not be ready in time for the interim report and demo. As of writing this, this unfortunately meant that we have not been able to test the full 
-extent of the limitations of our visualizations. With that being said, we are of course working hard to getting everything working as we had originally wished, and we are
-confident that everything will be in order for when we will have a server to host our website and tool.\\
-We can also talk about the theoretical limitations of our visualizations, as has been noted in the Related Works section. Our second visualization, the FoamTree,
-might run into long runtimes for large datasets, as it is a Voronoi Treemap.
+In this section we will write about the development of our tool, what went according to plan, and what didn't.
 
-\section{Conclusion and Future Work}
+\subsection{Website}
+
+As of writing the report, we did not manage to get the tool up and running on a server to it accessible to anyone around the world. We ran into a series of 
+unexpected complications. The main issue, from which most of our other problems stemmed, was the fact that we only got access to the server provided by
+the University in week 7 of the project. By then, we had already had written all of the code for our visualizations, with only the interactions needing to be sorted
+out. We had also created a website, which we could run locally, using Flask. Unfortunately, we ran into a major problem when trying to migrate our website
+to the server: upon trying to run our code, we saw that the server did not have Flask.\\
+As we obviously did not have super-user privileges, we had to try to find a work around. One of our many attempts was to create a virtual environment on the 
+server, where we would have complete control over and could install whatever module we had used for our website. After spending the necessary time to learn
+how to create the environment, and how to use it, we ran into another problem: the environment was running Python 2.7, whilst we used 3.5 for our project. 
+This unfortunately made the visualization come out botched up. For example, instead of having out Sunburt be the beautiful radial visualization that it was, 
+all nodes, other than the root node, would appear as a line pointing out from the root, all overlapped on top of each other.\\
+We tried various other approaches to fix our problems, and with each attempt, we encountered new and unforseen problems arrise. In the end, we realized that
+we did not have the required background knowledge to fix the problem without a major overhaul of our already written code. And that is the reason why the main
+issue for our website was recieving access to the server so late in the process. Since we had already written most of the important code, our initial thought when
+trying to get our tool to run on the server was to simply migrate our code, which ran perfectly locally, to the webserver. Our various (ineffective) solutions took us
+about a week and a half, after which we came to the conclusion that the only way we could think of to get the website up and running was to scrap all our 
+non-visualization code, and rewrite all the website code in html, no longer using Flask, or Python, and call our Python code for the visualization from the html file.
+Sadly, as nobody in our group had any experience in html, we realized it would not be feasible in the short amount of time we had left, especially with exams 
+coming up.\\
+While it is sub-optimal, we only had one solution left, so we decided to submit our final prototype the same way we did for the interim prototype, which is
+submit all the code with a 'how-to' text file telling the user how to run the code locally to have access to the tool.
+
+\subsection{Visualizations}
+
+Our first visualization, the Sunburst, works as intended. On the other hand, our second visualization, the FoamTree, does not. Our final product ended up being
+closer to a simple Tree Map than we had initially anticipated. FoamTrees are supposed to be highly interactive visualizations, allowing the user to click on any
+node and zoom in on it and seeing it's children and descendants up to a certain predetermined depth. This allows the user to quickly follow a path down the tree, 
+or navigate in any way through the tree with ease.\\
+We encountered the problem of Bokeh not having an easy or efficient way or redrawing, retracing, or deleting lines. We didn't manage to get callbacks to work
+the way we wanted to, and as a result, our FoamTree did not turn out the way we intended. What we ended up with was a Tree Map with all nodes drawn, no matter the depth. This resulted in a somewhat cluttered visualization, that was not as easy to comprehend as we would have hoped.
+
+\section{Future Work}
+This section will give solutions to the previously talked about problems, which we could not implement due to time constraints or lack of prior experience.
+
+\subsection{Website}
+
+With the required background knowledge in web development, we would have had a fairly simple and straight-forward solution, which would have been to simply
+rewrite all the code for the website in html, and calling our Python code for the visualization from there, circumventing any problem from missing Python libraries.
+It is also possible that had we had more experience with servers and websites, we would have not only been better equipped to deal with any enventual problem 
+were they to arrise, we could also have prevented a fair amount of them from coming to be in the first place.
+
+\subsection{Visualizations}
+
+In order to make our second visualization the FoamTree we originally intended it to be, a few adjustments would be necessary. First of all, getting callbacks to work
+in the way we need them to, in order to allow us to redraw or delete lines. Secondly, every rendition of the visualization should only show the root node (or current
+root node), as the outermost rectangle, and only its children, and not all its descendants. This would greatly reduce the cluttering of the visualization, while also 
+improving runtime, as it reduces the number of nodes it needs to draw. It is possible to have more than just the children shown, and instead showing all of 
+the descendants up to a certain depth. The third and final requirement would be to get our clicking interaction to work. This would mean that when the user
+clicks on a certain node, the visualization is redrawn with that node as the root node, and its children (or descendants to a certain depth) be shown.
+
+\subsection{Parser}
+
+
+
+\section{Conclusion}
 
 This Design-Based Learning course and project taught us a lot. We were given what seemed to be at first a large and unsurmountable task, which then when divided
 into smaller individual pieces with the help of our tutor and scrum master, no longer seemed to be a daunting and impossible assignment. We learned how to divide
 large wishes for our project into smaller, indepdenant tasks, so that any one member of our group could work on something at any time, whilst not having to rely on
 the work of others to complete their own. Through division of labour, the small subtasks came together like the different pieces of a puzzle, working in unison to work
 toward the final goal.\\
-We still have plans to improve our tool even further. We want to add further interactions with the visualizations, as well as maybe adding a new visualization to our
-tool altogether.
 
 %% if specified like this the section will be committed in review mode
 \acknowledgments{
